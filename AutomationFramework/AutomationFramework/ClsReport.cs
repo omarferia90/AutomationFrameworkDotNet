@@ -12,27 +12,29 @@ using System.Threading.Tasks;
 
 namespace AutomationFramework
 {
-    public class ClsReport
+    public class ClsReport : BaseSetup
     {
         public ExtentReports objExtent;
         public ExtentTest objTest;
-        public ExtentHtmlReporter objHtmlReporter;
+        #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
+        public ExtentV3HtmlReporter objHtmlReporter;
+        #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
         public bool TC_Status;
         public bool DevOpsResult;
         public bool isWarning;
-        public string BaseReportFolder = "";
+        public string BaseReportFolder;
         public string FullReportFolder;
-        public string TestPlanSuite = "";
-        private IWebDriver driver;
+        public string TestPlanSuite;
+        private IWebDriver driver = null;
 
+        
         /// <summary>
-        /// Contructor to init driver
+        /// Inits driver that will be used to take screenshot in the report during execution time.
         /// </summary>
         /// <param name="driver"></param>
-        public ClsReport(IWebDriver driver) 
+        public void InitDriver(IWebDriver driver) 
         {
-            ClsBrowser browser = new ClsBrowser();
-            this.driver = browser.getDriver();
+            this.driver = driver;
         }
 
         /// <summary>
@@ -44,22 +46,24 @@ namespace AutomationFramework
             {
                 //Get Result Path
                 string folderID = $"_{Environment.UserName.ToString()}";
-                BaseReportFolder = TestContext.Parameters["GI_ReportLocation"] + DateTime.Now.ToString("MMddyyyy_hhmmss") + folderID + @"\";
-                FullReportFolder = BaseReportFolder + TestContext.Parameters["GI_ProjectName"] + @"\" + TestContext.Parameters["GI_ReportName"] + ".html";
+                BaseReportFolder = TestContext.Parameters["ReportLocation"] + DateTime.Now.ToString("MMddyyyy_hhmmss") + folderID + @"\";
+                FullReportFolder = BaseReportFolder + TestContext.Parameters["ProjectName"] + @"\" + TestContext.Parameters["ReportName"] + ".html";
                 fnFolderSetup();
 
                 //Setup Report
-                objHtmlReporter = new ExtentHtmlReporter(FullReportFolder);
-                objHtmlReporter.Config.ReportName = TestContext.Parameters["GI_ReportName"];
-                objHtmlReporter.Config.DocumentTitle = TestContext.Parameters["GI_ProjectName"] + " - " + TestContext.Parameters["GI_ReportName"];
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
+                objHtmlReporter = new ExtentV3HtmlReporter(FullReportFolder);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
+                objHtmlReporter.Config.ReportName = TestContext.Parameters["ReportName"];
+                objHtmlReporter.Config.DocumentTitle = TestContext.Parameters["ProjectName"] + " - " + TestContext.Parameters["ReportName"];
                 objHtmlReporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Dark;
                 objHtmlReporter.Config.Encoding = "utf-8";
 
                 //Adding Details to Report
                 objExtent = new ExtentReports();
-                objExtent.AddSystemInfo("Project", TestContext.Parameters["GI_ProjectName"]);
-                objExtent.AddSystemInfo("Browser", TestContext.Parameters["GI_BrowserName"]);
-                objExtent.AddSystemInfo("Env", TestContext.Parameters["GI_TestEnvironment"]);
+                objExtent.AddSystemInfo("Project", TestContext.Parameters["ProjectName"]);
+                objExtent.AddSystemInfo("Browser", TestContext.Parameters["BrowserName"]);
+                objExtent.AddSystemInfo("Env", TestContext.Parameters["TestEnvironment"]);
                 objExtent.AddSystemInfo("Executed By", Environment.UserName.ToString());
                 objExtent.AddSystemInfo("Executed Machine", Environment.MachineName.ToString());
                 objExtent.AddSystemInfo("Execution Time", DateTime.Now.ToString("MM/ddy/yyy hh:mm:ss"));
@@ -114,7 +118,7 @@ namespace AutomationFramework
         /// <param name="pstrDescription"></param>
         /// <param name="pstrStatus"></param>
         /// <param name="pblScreenShot"></param>
-        public void fnLog(string pstrStepName, string pstrDescription, Status pstrStatus, bool pblScreenShot)
+        public void fnLog(string pDetails, Status pstrStatus, bool pblScreenShot)
         {
             MediaEntityModelProvider ss = null;
             if (pblScreenShot)
@@ -123,7 +127,7 @@ namespace AutomationFramework
                 ss = MediaEntityBuilder.CreateScreenCaptureFromPath(strSCLocation).Build();
             }
 
-            objTest.Log(pstrStatus == Status.Skip ? Status.Info : pstrStatus, pstrDescription, ss);
+            objTest.Log(pstrStatus == Status.Skip ? Status.Info : pstrStatus, pDetails, ss);
         }
 
         
@@ -133,7 +137,7 @@ namespace AutomationFramework
         /// <returns></returns>
         public string fnGetScreenshot()
         {
-            string strSCName = "SC_" + TestContext.Parameters["GI_ProjectName"].Replace(" ", "_") + "_" + DateTime.Now.ToString("MMddyyyy_hhmmss");
+            string strSCName = "SC_" + TestContext.Parameters["ProjectName"].Replace(" ", "_") + "_" + DateTime.Now.ToString("MMddyyyy_hhmmss");
             Screenshot objFile = ((ITakesScreenshot)driver).GetScreenshot();
             string strFileLocation = BaseReportFolder + @"Screenshots\" + strSCName + ".jpg";
             objFile.SaveAsFile(strFileLocation, ScreenshotImageFormat.Jpeg);
@@ -149,7 +153,7 @@ namespace AutomationFramework
         {
             try
             {
-                string[] strSubFolders = new string[2] { "ScreenShots", TestContext.Parameters["GI_ProjectName"] };
+                string[] strSubFolders = new string[2] { "ScreenShots", TestContext.Parameters["ProjectName"] };
                 bool blFExist = System.IO.Directory.Exists(BaseReportFolder);
                 if (!blFExist)
                 {
@@ -168,8 +172,7 @@ namespace AutomationFramework
                     }
                 }
             }
-            catch (Exception e)
-            {}
+            catch {}
         }
 
 

@@ -11,7 +11,9 @@ namespace AutomationFramework
 {
     public class ClsDB
     {
+        #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
         private OracleConnection conn;
+        #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
         private static string strConnection;
 
         /// <summary>
@@ -46,7 +48,9 @@ namespace AutomationFramework
         {
             try
             {
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 conn = new OracleConnection(pstrConnection);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
                 conn.Open();
             }
             catch (Exception e)
@@ -79,7 +83,9 @@ namespace AutomationFramework
         {
             try
             {
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 OracleCommand cmd = new OracleCommand(pstrQuery, conn);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
                 cmd.ExecuteNonQuery();
                 fnCloseConnection();
             }
@@ -99,7 +105,9 @@ namespace AutomationFramework
         {
             try
             {
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 OracleCommand cmd = new OracleCommand(pstrQuery, conn);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
                 DbDataReader reader = cmd.ExecuteReader();
                 DataTable dt = new DataTable();
                 dt.Load(reader);
@@ -123,8 +131,12 @@ namespace AutomationFramework
         {
             try
             {
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 OracleDataAdapter adapter = new OracleDataAdapter(pstrQuery, conn);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 OracleCommandBuilder builder = new OracleCommandBuilder(adapter);
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
                 DataSet dataset = new DataSet();
                 adapter.Fill(dataset);
                 DataTable datatable = new DataTable();
@@ -150,11 +162,13 @@ namespace AutomationFramework
             string strValue;
             try
             {
+                #pragma warning disable CS0618 // El tipo o el miembro están obsoletos
                 using (var cmd = new OracleCommand(pstrQuery, conn))
                 {
                     strValue = cmd.ExecuteScalar().ToString();
                     fnCloseConnection();
                 }
+                #pragma warning restore CS0618 // El tipo o el miembro están obsoletos
             }
             catch (Exception e)
             {

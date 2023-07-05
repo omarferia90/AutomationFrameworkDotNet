@@ -472,14 +472,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseSetup.cs" />
     <Compile Include="ClsBrowser.cs" />
     <Compile Include="ClsData.cs" />
     <Compile Include="ClsDB.cs" />
     <Compile Include="ClsReport.cs" />
+    <Compile Include="ClsWebElement.cs" />
+    <Compile Include="CustomExeption.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSuite\TestLoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Env.runsettings" />
     <None Include="Oracle.DataAccess.Common.Configuration.Section.xsd">
       <SubType>Designer</SubType>
     </None>

@@ -62,7 +62,10 @@ namespace AutomationFramework
         }
 
 
+        public void NavigateTo(string URL) { driver.Url = URL; }
 
+        public void CloseBrowser() { driver.Close(); driver.Quit(); }
+        
 
     }
 }
