@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AutomationFramework
 {
-    public class ClsReport : BaseSetup
+    public class ClsReport 
     {
         public ExtentReports objExtent;
         public ExtentTest objTest;
@@ -27,15 +27,12 @@ namespace AutomationFramework
         public string TestPlanSuite;
         private IWebDriver driver = null;
 
-        
-        /// <summary>
-        /// Inits driver that will be used to take screenshot in the report during execution time.
-        /// </summary>
-        /// <param name="driver"></param>
-        public void InitDriver(IWebDriver driver) 
+        //Inits driver
+        public void initDriver(IWebDriver driver) 
         {
             this.driver = driver;
         }
+        
 
         /// <summary>
         /// Setup the instances for Extent Report

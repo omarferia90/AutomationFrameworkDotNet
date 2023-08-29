@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace AutomationFramework
     {
         public IWebDriver driver;
         public String browserName;
+        public WebDriverWait jsWait;
 
 
         public IWebDriver getDriver() 
@@ -59,6 +61,8 @@ namespace AutomationFramework
             driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20); //to wait for a page to load completely before throwing an error
             driver.Manage().Window.Maximize();
             driver.Manage().Cookies.DeleteAllCookies();
+            //Init WebDriverWait for JS calls
+            jsWait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
         }
 
 
