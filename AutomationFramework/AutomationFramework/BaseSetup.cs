@@ -18,6 +18,8 @@ namespace AutomationFramework
         public ClsWebElement objWE;
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+
+
         [OneTimeSetUp]
         public void BeforeClass()
         {
@@ -28,12 +30,10 @@ namespace AutomationFramework
 
         public void SetUpTC(string TestCaseName) 
         {
-            log.Info("log4net test");
             objReport.objTest = objReport.objExtent.CreateTest(TestCaseName);
             objBrowser.StartBrowser(TestContext.Parameters["BrowserName"]);
             objWE = new ClsWebElement(objBrowser.getDriver(), objReport);
             objReport.initDriver(objBrowser.getDriver());
-
         }
 
 

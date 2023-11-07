@@ -22,12 +22,23 @@ namespace AutomationFramework.TestSuite
         {
             
 
-            //var _json = File.ReadAllText(@"W:\Automation Projects\TestData\LoginData.json");
+            var _json = File.ReadAllText(@"W:\Automation Projects\TestData\LoginData.json");
+            
+            var a = JObject.Parse(_json.ToString());
+
+            foreach (JObject o in a.Children<JObject>())
+            {
+                foreach (JProperty p in o.Properties())
+                {
+                    string name = p.Name;
+                    string value = (string)p.Value;
+                    Console.WriteLine(name + " -- " + value);
+                }
+            }
+
+
             //JObject rss = JObject.Parse(_json.ToString());
-
             //string name = (string)rss["data"]["UserName"][0];
-
-
             //var jsonData = JsonConvert.SerializeObject(_json, Formatting.None);
 
             /*
@@ -48,14 +59,22 @@ namespace AutomationFramework.TestSuite
         [Test]
         public void MyFirstTest() 
         {
-            SetUpTC("My Test");
-            objBrowser.NavigateTo("https://intake-uat.sedgwick.com/");
-            objWE.fnSendKeys(objWE.fnGetWebElement(By.Id("orangeForm-name")), "Text", "oferiaDelta");
-            objReport.fnLog("Info", Status.Info, false);
-            objReport.fnLog("Pass", Status.Pass, false);
-            objReport.fnLog("Faillkljhlkjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj hhjlkkllk", Status.Fail, true);
-            objReport.fnLog("Warning", Status.Warning, false);
-            CloseTC();
+            try
+            {
+                SetUpTC("My Test");
+                objBrowser.NavigateTo("https://intake-uat.sedgwick.com/");
+                objWE.fnSendKeys(objWE.fnGetWebElement(By.Id("orangeForm-name")), "Text", "oferiaDelta");
+                objReport.fnLog("Info", Status.Info, false);
+                objReport.fnLog("Pass", Status.Pass, false);
+                objReport.fnLog("Warning", Status.Warning, false);
+                CloseTC();
+            }
+            catch (Exception ex) 
+            { objReport.fnLog($"An Exception has occurred: {ex.Message}", Status.Fail, false); }
+            finally
+            {
+                CloseTC();
+            }
         }
 
         [Test]

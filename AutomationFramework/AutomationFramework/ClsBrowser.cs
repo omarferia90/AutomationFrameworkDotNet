@@ -53,16 +53,17 @@ namespace AutomationFramework
                     new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
                     ChromeOptions optionchrome = new ChromeOptions();
                     optionchrome.AddArgument("no-sandbox");
+                    //optionchrome.AddArgument("EnableChromeDriverAutomation"); //NVDA Testing
                     driver = new ChromeDriver(optionchrome);
                     break;
             }
             //Driver Setup
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);  //time before throwing an exception
-            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20); //to wait for a page to load completely before throwing an error
+            driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(10); //to wait for a page to load completely before throwing an error
             driver.Manage().Window.Maximize();
             driver.Manage().Cookies.DeleteAllCookies();
             //Init WebDriverWait for JS calls
-            jsWait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+            jsWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
 
 

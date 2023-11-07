@@ -36,7 +36,7 @@ namespace AutomationFramework
         {
             Actions action = new Actions(driver);
             objFW = new DefaultWait<IWebDriver>(driver);
-            objFW.Timeout = TimeSpan.FromSeconds(10);
+            objFW.Timeout = TimeSpan.FromSeconds(5);
             objFW.PollingInterval = TimeSpan.FromMilliseconds(250);
             objFW.IgnoreExceptionTypes(typeof(WebDriverTimeoutException), typeof(SuccessException));
 
@@ -163,13 +163,56 @@ namespace AutomationFramework
             }
             catch (Exception objException)
             {
-                objReport.fnLog($"Sendkeys for element: \"{strField}\" with value \"{strValue}\" failed.", Status.Fail, takeScreenshot);
+                fnHandlingException(objException, "SendKeysFail", strField, strValue);
+            }
+            return blResult;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objWE"></param>
+        /// <param name="strField"></param>
+        /// <param name="strValue"></param>
+        /// <param name="takeScreenshot"></param>
+        /// <returns></returns>
+
+        public bool fnCustomSendKeys(IWebElement objWE, string strField, string strValue, bool takeScreenshot = false)
+        {
+            bool blResult = false;
+            try
+            {
+                objReport.fnLog($"Step - Sendkeys for element: \"{strField}\".", Status.Info, false);
+                fnGetFluentWait(objWE, "CustomSendKeys", strValue);
+                objReport.fnLog($"Sendkeys for element: \"{strField}\" with value \"{strValue}\" was done successfully.", Status.Pass, takeScreenshot);
+                blResult = true;
+            }
+            catch (Exception objException)
+            {
+                fnHandlingException(objException, "SendKeysFail", strField, strValue);
             }
             return blResult;
         }
 
 
 
+        private void fnHandlingException(Exception objException, string exType, string strField = "", string strValue = "", bool takeScreenshot = false) 
+        {
+            //Select Case
+            switch (exType) 
+            {
+                case "SendKeysFail":
+                    objReport.fnLog($"Sendkeys for element: \"{strField}\" has failed.", Status.Fail, takeScreenshot);
+                    break;
+            }
+            //Print Stack Trace
+            if (Convert.ToBoolean(TestContext.Parameters["AddStackTrace"]) || Convert.ToBoolean(TestContext.Parameters["AddMessage"]))
+            {
+                var strMessage = Convert.ToBoolean(TestContext.Parameters["AddMessage"]) ? $"Message:->> [{objException.Message}]." : "";
+                var strStackTrace = Convert.ToBoolean(TestContext.Parameters["AddMessage"]) ? $"StackTrace:->> [{objException.StackTrace}]." : "";
+                objReport.fnLog($"{strMessage}\n{strStackTrace}", Status.Debug, false); 
+            }
+        }
 
 
 
