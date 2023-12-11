@@ -478,6 +478,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseSetup.cs" />
+    <Compile Include="Browser.cs" />
     <Compile Include="ClsBrowser.cs" />
     <Compile Include="ClsData.cs" />
     <Compile Include="ClsDataJson.cs" />

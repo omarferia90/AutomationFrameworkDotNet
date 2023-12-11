@@ -16,16 +16,13 @@ namespace AutomationFramework.TestSuite
     [TestFixture]
     public class TestLoad : BaseSetup
     {
-
+        
         [Test]
         public void ReadJsonFiles()
         {
             
-
             var _json = File.ReadAllText(@"W:\Automation Projects\TestData\LoginData.json");
-            
             var a = JObject.Parse(_json.ToString());
-
             foreach (JObject o in a.Children<JObject>())
             {
                 foreach (JProperty p in o.Properties())
@@ -35,6 +32,7 @@ namespace AutomationFramework.TestSuite
                     Console.WriteLine(name + " -- " + value);
                 }
             }
+            
 
 
             //JObject rss = JObject.Parse(_json.ToString());
@@ -59,6 +57,7 @@ namespace AutomationFramework.TestSuite
         [Test]
         public void MyFirstTest() 
         {
+            
             try
             {
                 SetUpTC("My Test");
@@ -75,11 +74,13 @@ namespace AutomationFramework.TestSuite
             {
                 CloseTC();
             }
+            
         }
 
         [Test]
         public void MyFirstTest2()
         {
+            
             SetUpTC("My Test 2");
             objBrowser.NavigateTo("https://intake-uat.sedgwick.com/");
             objWE.fnSendKeys(objWE.fnGetWebElement(By.Id("orangeForm-name")), "Text", "ABDEX");
@@ -88,7 +89,9 @@ namespace AutomationFramework.TestSuite
             objReport.fnLog("Faillkljhlkjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj hhjlkkllk", Status.Fail, true);
             objReport.fnLog("Warning", Status.Warning, false);
             CloseTC();
+            
         }
 
+        
     }
 }
